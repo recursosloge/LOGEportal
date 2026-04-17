@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal LOGE - Universidad Austral</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .year-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .year-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .year-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .quarter-section {
+            margin-bottom: 40px;
+        }
+
+        .quarter-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .quarter-badge {
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .badge-otono { background-color: #d97706; }
+        .badge-invierno { background-color: #2563eb; }
+        .badge-primavera { background-color: #059669; }
+        .badge-verano { background-color: #dc2626; }
+
+        .quarter-title h3 {
+            color: #333;
+            font-size: 1.4em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: #f5f5f5;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .materias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .materia-card {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .materia-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            border-color: #667eea;
+        }
+
+        .materia-sigla {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .materia-nombre {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .profesor-item {
+            background: white;
+            padding: 10px;
+            border-left: 3px solid #667eea;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .profesor-nombre {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .profesor-email {
+            font-size: 0.85em;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .profesor-email:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 1.1em;
+        }
+
+        .info-message {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+
+            .materias-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Portal LOGE</h1>
+            <p>Universidad Austral - Licenciatura en Organización y Gestión Educativa</p>
+        </div>
+
+        <div class="controls">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="mostrarTab('inicio')">Inicio</button>
+                <button class="tab-btn" onclick="mostrarTab('cronograma')">Cronograma</button>
+                <button class="tab-btn" onclick="mostrarTab('materias')">Materias</button>
+                <button class="tab-btn" onclick="mostrarTab('capacidades')">Capacidades</button>
+                <button class="tab-btn" onclick="mostrarTab('avisos')">Avisos</button>
+            </div>
+            <div class="year-selector">
+                <button class="year-btn active" onclick="cambiarAño(1)">1° año</button>
+                <button class="year-btn" onclick="cambiarAño(2)">2° año</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="inicio" class="tab-content active">
+                <div class="info-message">
+                    <strong>¡Bienvenido al Portal LOGE!</strong>
+                    Aquí encontrarás toda la información sobre el cronograma de clases, materias, competencias docentes y avisos importantes de tu carrera.
+                </div>
+                <h2>Licenciatura en Organización y Gestión Educativa</h2>
+                <p style="margin-top: 20px; color: #666; line-height: 1.6;">
+                    Este portal te proporciona acceso a toda la información académica que necesitas para tu formación en la Licenciatura en Organización y Gestión Educativa (LOGE). 
+                    Utiliza los botones en la parte superior para navegar entre secciones.
+                </p>
+                <ul style="margin-top: 20px; margin-left: 20px; color: #666; line-height: 1.8;">
+                    <li><strong>Cronograma:</strong> Visualiza todas las clases planificadas por trimestre</li>
+                    <li><strong>Materias:</strong> Consulta información sobre los cursos y sus profesores</li>
+                    <li><strong>Capacidades:</strong> Conoce las competencias docentes que desarrollarás</li>
+                    <li><strong>Avisos:</strong> Mantente informado sobre noticias y comunicados importantes</li>
+                </ul>
+            </div>
+
+            <div id="cronograma" class="tab-content">
+                <h2>Cronograma Académico</h2>
+                <div id="cronogramaContent"></div>
+            </div>
+
+            <div id="materias" class="tab-content">
+                <h2>Materias</h2>
+                <div id="materiasContent"></div>
+            </div>
+
+            <div id="capacidades" class="tab-content">
+                <h2>Capacidades Docentes</h2>
+                <div id="capacidadesContent"></div>
+            </div>
+
+            <div id="avisos" class="tab-content">
+                <h2>Avisos</h2>
+                <div id="avisosContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let anoActual = 1;
+
+        // DATOS COMPLETOS EMBEBIDOS
+        const datosCompletos = {
+  "cronograma": [
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-03-17",
+      "fh": "2026-03-23",
+      "fc": "2026-03-17",
+      "dia": "martes",
+      "mat": "POE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-03-24",
+      "fh": "2026-03-30",
+      "fc": "2026-03-25",
+      "dia": "miércoles",
+      "mat": "AF",
+      "obs": "Feriado 24/03: clase pasa a miércoles 25/03"
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-03-31",
+      "fh": "2026-04-06",
+      "fc": "2026-03-31",
+      "dia": "martes",
+      "mat": "FPGE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-04-07",
+      "fh": "2026-04-13",
+      "fc": "2026-04-07",
+      "dia": "martes",
+      "mat": "Taller Integración – F1",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-04-14",
+      "fh": "2026-04-20",
+      "fc": "2026-04-14",
+      "dia": "martes",
+      "mat": "POE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-04-21",
+      "fh": "2026-04-27",
+      "fc": "2026-04-21",
+      "dia": "martes",
+      "mat": "AF",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-04-28",
+      "fh": "2026-05-04",
+      "fc": "2026-04-28",
+      "dia": "martes",
+      "mat": "FPGE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-05-05",
+      "fh": "2026-05-11",
+      "fc": "2026-05-05",
+      "dia": "martes",
+      "mat": "Taller Integración – F1",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-05-12",
+      "fh": "2026-05-18",
+      "fc": "2026-05-12",
+      "dia": "martes",
+      "mat": "POE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-05-19",
+      "fh": "2026-05-25",
+      "fc": "2026-05-19",
+      "dia": "martes",
+      "mat": "AF",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-05-26",
+      "fh": "2026-06-01",
+      "fc": "2026-05-26",
+      "dia": "martes",
+      "mat": "FPGE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-06-02",
+      "fh": "2026-06-08",
+      "fc": "2026-06-02",
+      "dia": "martes",
+      "mat": "Taller Integración – F1",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Entre Otoño e Invierno",
+      "t": "Break",
+      "s": null,
+      "fd": "2026-06-09",
+      "fh": "2026-06-15",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Sin actividad de cursada"
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-06-16",
+      "fh": "2026-06-22",
+      "fc": "2026-06-16",
+      "dia": "martes",
+      "mat": "MIE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-06-23",
+      "fh": "2026-06-29",
+      "fc": "2026-06-23",
+      "dia": "martes",
+      "mat": "DPSI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-06-30",
+      "fh": "2026-07-06",
+      "fc": "2026-06-30",
+      "dia": "martes",
+      "mat": "EI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-07-07",
+      "fh": "2026-07-13",
+      "fc": "2026-07-07",
+      "dia": "martes",
+      "mat": "Taller Integración – F2",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-07-14",
+      "fh": "2026-07-20",
+      "fc": "2026-07-14",
+      "dia": "martes",
+      "mat": "MIE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-07-21",
+      "fh": "2026-07-27",
+      "fc": "2026-07-21",
+      "dia": "martes",
+      "mat": "DPSI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Receso",
+      "s": null,
+      "fd": "2026-07-28",
+      "fh": "2026-08-03",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Receso de invierno UA (sin clases)"
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-08-04",
+      "fh": "2026-08-10",
+      "fc": "2026-08-04",
+      "dia": "martes",
+      "mat": "EI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-08-11",
+      "fh": "2026-08-17",
+      "fc": "2026-08-11",
+      "dia": "martes",
+      "mat": "Taller Integración – F2",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-08-18",
+      "fh": "2026-08-24",
+      "fc": "2026-08-18",
+      "dia": "martes",
+      "mat": "MIE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-08-25",
+      "fh": "2026-08-31",
+      "fc": "2026-08-25",
+      "dia": "martes",
+      "mat": "DPSI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-09-01",
+      "fh": "2026-09-07",
+      "fc": "2026-09-01",
+      "dia": "martes",
+      "mat": "EI",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-09-08",
+      "fh": "2026-09-14",
+      "fc": "2026-09-08",
+      "dia": "martes",
+      "mat": "Taller Integración – F2",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Entre Invierno e Primavera",
+      "t": "Break",
+      "s": null,
+      "fd": "2026-09-15",
+      "fh": "2026-09-21",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Sin actividad de cursada"
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-09-22",
+      "fh": "2026-09-28",
+      "fc": "2026-09-22",
+      "dia": "martes",
+      "mat": "DDC",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-09-29",
+      "fh": "2026-10-05",
+      "fc": "2026-09-29",
+      "dia": "martes",
+      "mat": "PLE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-10-06",
+      "fh": "2026-10-12",
+      "fc": "2026-10-06",
+      "dia": "martes",
+      "mat": "PCE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-10-13",
+      "fh": "2026-10-19",
+      "fc": "2026-10-13",
+      "dia": "martes",
+      "mat": "Taller Integración – F3",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-10-20",
+      "fh": "2026-10-26",
+      "fc": "2026-10-20",
+      "dia": "martes",
+      "mat": "DDC",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-10-27",
+      "fh": "2026-11-02",
+      "fc": "2026-10-27",
+      "dia": "martes",
+      "mat": "PLE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-11-03",
+      "fh": "2026-11-09",
+      "fc": "2026-11-03",
+      "dia": "martes",
+      "mat": "PCE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-11-10",
+      "fh": "2026-11-16",
+      "fc": "2026-11-10",
+      "dia": "martes",
+      "mat": "Taller Integración – F3",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-11-17",
+      "fh": "2026-11-23",
+      "fc": "2026-11-17",
+      "dia": "martes",
+      "mat": "DDC",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-11-24",
+      "fh": "2026-11-30",
+      "fc": "2026-11-24",
+      "dia": "martes",
+      "mat": "PLE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-12-01",
+      "fh": "2026-12-07",
+      "fc": "2026-12-01",
+      "dia": "martes",
+      "mat": "PCE",
+      "obs": null
+    },
+    {
+      "a": 1,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-12-08",
+      "fh": "2026-12-14",
+      "fc": "2026-12-09",
+      "dia": "miércoles",
+      "mat": "Taller Integración – F3",
+      "obs": "Feriado 8/12: clase pasa a miércoles 9/12"
+    },
+    {
+      "a": 1,
+      "q": "Verano",
+      "t": "Recuperatorio",
+      "s": null,
+      "fd": "2026-12-15",
+      "fh": "2026-12-21",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Semana de recuperatorios (sin clases regulares)"
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-02-24",
+      "fh": "2026-03-02",
+      "fc": "2026-02-26",
+      "dia": "jueves",
+      "mat": "PGE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-03-03",
+      "fh": "2026-03-09",
+      "fc": "2026-03-05",
+      "dia": "jueves",
+      "mat": "AFR",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-03-10",
+      "fh": "2026-03-16",
+      "fc": "2026-03-12",
+      "dia": "jueves",
+      "mat": "CI",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-03-17",
+      "fh": "2026-03-23",
+      "fc": "2026-03-19",
+      "dia": "jueves",
+      "mat": "Taller Integración – F4",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-03-24",
+      "fh": "2026-03-30",
+      "fc": "2026-03-26",
+      "dia": "jueves",
+      "mat": "PGE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-03-31",
+      "fh": "2026-04-06",
+      "fc": "2026-04-01",
+      "dia": "miércoles",
+      "mat": "AFR",
+      "obs": "Feriado 2/04: clase pasa a miércoles 1/04"
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-04-07",
+      "fh": "2026-04-13",
+      "fc": "2026-04-09",
+      "dia": "jueves",
+      "mat": "CI",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-04-14",
+      "fh": "2026-04-20",
+      "fc": "2026-04-16",
+      "dia": "jueves",
+      "mat": "Taller Integración – F4",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-04-21",
+      "fh": "2026-04-27",
+      "fc": "2026-04-23",
+      "dia": "jueves",
+      "mat": "PGE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-04-28",
+      "fh": "2026-05-04",
+      "fc": "2026-04-30",
+      "dia": "jueves",
+      "mat": "AFR",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-05-05",
+      "fh": "2026-05-11",
+      "fc": "2026-05-07",
+      "dia": "jueves",
+      "mat": "CI",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Otoño",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-05-12",
+      "fh": "2026-05-18",
+      "fc": "2026-05-14",
+      "dia": "jueves",
+      "mat": "Taller Integración – F4",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Entre Otoño e Invierno",
+      "t": "Break",
+      "s": null,
+      "fd": "2026-05-19",
+      "fh": "2026-05-25",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Sin actividad de cursada"
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-05-26",
+      "fh": "2026-06-01",
+      "fc": "2026-05-28",
+      "dia": "jueves",
+      "mat": "GSET",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-06-02",
+      "fh": "2026-06-08",
+      "fc": "2026-06-04",
+      "dia": "jueves",
+      "mat": "LEE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-06-09",
+      "fh": "2026-06-15",
+      "fc": "2026-06-11",
+      "dia": "jueves",
+      "mat": "AE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-06-16",
+      "fh": "2026-06-22",
+      "fc": "2026-06-18",
+      "dia": "jueves",
+      "mat": "Taller Integración – F5",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-06-23",
+      "fh": "2026-06-29",
+      "fc": "2026-06-25",
+      "dia": "jueves",
+      "mat": "GSET",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-06-30",
+      "fh": "2026-07-06",
+      "fc": "2026-07-02",
+      "dia": "jueves",
+      "mat": "LEE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-07-07",
+      "fh": "2026-07-13",
+      "fc": "2026-07-08",
+      "dia": "miércoles",
+      "mat": "AE",
+      "obs": "Feriado 9/07: clase pasa a miércoles 8/07"
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Receso",
+      "s": null,
+      "fd": "2026-07-28",
+      "fh": "2026-08-03",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Receso de invierno UA (sin clases)"
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-08-04",
+      "fh": "2026-08-10",
+      "fc": "2026-08-06",
+      "dia": "jueves",
+      "mat": "Taller Integración – F5",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-08-11",
+      "fh": "2026-08-17",
+      "fc": "2026-08-13",
+      "dia": "jueves",
+      "mat": "GSET",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-08-18",
+      "fh": "2026-08-24",
+      "fc": "2026-08-20",
+      "dia": "jueves",
+      "mat": "LEE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Entre Invierno e Primavera",
+      "t": "Break",
+      "s": null,
+      "fd": "2026-08-25",
+      "fh": "2026-08-31",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Sin actividad de cursada"
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-08-25",
+      "fh": "2026-08-31",
+      "fc": "2026-08-27",
+      "dia": "jueves",
+      "mat": "AE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 1.0,
+      "fd": "2026-09-01",
+      "fh": "2026-09-07",
+      "fc": "2026-09-03",
+      "dia": "jueves",
+      "mat": "GIE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Invierno",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-09-01",
+      "fh": "2026-09-07",
+      "fc": "2026-09-03",
+      "dia": "jueves",
+      "mat": "Taller Integración – F5",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 2.0,
+      "fd": "2026-09-08",
+      "fh": "2026-09-14",
+      "fc": "2026-09-10",
+      "dia": "jueves",
+      "mat": "EDP",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 3.0,
+      "fd": "2026-09-15",
+      "fh": "2026-09-21",
+      "fc": "2026-09-17",
+      "dia": "jueves",
+      "mat": "Electiva",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 4.0,
+      "fd": "2026-09-22",
+      "fh": "2026-09-28",
+      "fc": "2026-09-24",
+      "dia": "jueves",
+      "mat": "Taller Integración – F6",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 5.0,
+      "fd": "2026-09-29",
+      "fh": "2026-10-05",
+      "fc": "2026-10-01",
+      "dia": "jueves",
+      "mat": "GIE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 6.0,
+      "fd": "2026-10-06",
+      "fh": "2026-10-12",
+      "fc": "2026-10-08",
+      "dia": "jueves",
+      "mat": "EDP",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 7.0,
+      "fd": "2026-10-13",
+      "fh": "2026-10-19",
+      "fc": "2026-10-15",
+      "dia": "jueves",
+      "mat": "Electiva",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 8.0,
+      "fd": "2026-10-20",
+      "fh": "2026-10-26",
+      "fc": "2026-10-22",
+      "dia": "jueves",
+      "mat": "Taller Integración – F6",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 9.0,
+      "fd": "2026-10-27",
+      "fh": "2026-11-02",
+      "fc": "2026-10-29",
+      "dia": "jueves",
+      "mat": "GIE",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 10.0,
+      "fd": "2026-11-03",
+      "fh": "2026-11-09",
+      "fc": "2026-11-05",
+      "dia": "jueves",
+      "mat": "EDP",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 11.0,
+      "fd": "2026-11-10",
+      "fh": "2026-11-16",
+      "fc": "2026-11-12",
+      "dia": "jueves",
+      "mat": "Electiva",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Primavera",
+      "t": "Clase",
+      "s": 12.0,
+      "fd": "2026-11-17",
+      "fh": "2026-11-23",
+      "fc": "2026-11-19",
+      "dia": "jueves",
+      "mat": "Taller Integración – F6",
+      "obs": null
+    },
+    {
+      "a": 2,
+      "q": "Verano",
+      "t": "Recuperatorio",
+      "s": null,
+      "fd": "2026-12-15",
+      "fh": "2026-12-21",
+      "fc": null,
+      "dia": null,
+      "mat": null,
+      "obs": "Semana de recuperatorios (sin clases regulares)"
+    }
+  ],
+  "materias": {
+    "PGE": {
+      "sigla": "PGE",
+      "nombre": "Principios de gestión educativa",
+      "profesores": [
+        {
+          "nombre": "Joaquín Viqueira",
+          "email": "JViqueira-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "María Coelho",
+          "email": "mcoelho@austral.edu.ar"
+        }
+      ]
+    },
+    "LCE": {
+      "sigla": "LCE",
+      "nombre": "Liderazgo y organización de equipos",
+      "profesores": [
+        {
+          "nombre": "Guillermo Luquez",
+          "email": "gluquez@austral.edu.ar"
+        },
+        {
+          "nombre": "Pedro Leon Vivas",
+          "email": "PVivas-ext@austral.edu.a"
+        }
+      ]
+    },
+    "CI": {
+      "sigla": "CI",
+      "nombre": "Comunicación institucional",
+      "profesores": [
+        {
+          "nombre": "Cesar Caldarolla",
+          "email": "ccaldarola@austral.edu.ar"
+        }
+      ]
+    },
+    "AFR": {
+      "sigla": "AFR",
+      "nombre": "Administración financiera de los recursos",
+      "profesores": [
+        {
+          "nombre": "Mariana Teraussnnigg",
+          "email": "MTraussnigg-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "Liliana Fassi",
+          "email": "fassi@mail.austral.edu.ar"
+        },
+        {
+          "nombre": "Juan Assirio",
+          "email": "jassirio@austral.edu.ar"
+        }
+      ]
+    },
+    "DPSI": {
+      "sigla": "DPSI",
+      "nombre": "Diagnóstico, planiamiento y supervisión institucional",
+      "profesores": [
+        {
+          "nombre": "Diana Bria",
+          "email": "dbria@mail.austral.edu.ar"
+        },
+        {
+          "nombre": "Pedro Leon Vivas",
+          "email": "PVivas-ext@austral.edu.a"
+        }
+      ]
+    },
+    "AE": {
+      "sigla": "AE",
+      "nombre": "Antropología de la educación",
+      "profesores": [
+        {
+          "nombre": "Juan Assirio",
+          "email": "jassirio@austral.edu.ar"
+        },
+        {
+          "nombre": "María Coelho",
+          "email": "mcoelho@austral.edu.ar"
+        }
+      ]
+    },
+    "GSET": {
+      "sigla": "GSET",
+      "nombre": "Gestión socio emocional del talento",
+      "profesores": [
+        {
+          "nombre": "Gastón del Rio",
+          "email": "GDelRio@austral.edu.a"
+        }
+      ]
+    },
+    "GIE": {
+      "sigla": "GIE",
+      "nombre": "Gestión de la innovación educativa",
+      "profesores": [
+        {
+          "nombre": "Laura Ferrofino",
+          "email": "LFerrofino@austral.edu.ar"
+        },
+        {
+          "nombre": "Marina Leitner",
+          "email": "MLeitner-ext@austral.edu.a"
+        }
+      ]
+    },
+    "ELE": {
+      "sigla": "ELE",
+      "nombre": "Ética del liderazgo educativo",
+      "profesores": [
+        {
+          "nombre": "Juan Assirio",
+          "email": "jassirio@austral.edu.ar"
+        }
+      ]
+    },
+    "TI": {
+      "sigla": "TI",
+      "nombre": "Taller de integración",
+      "profesores": [
+        {
+          "nombre": "Verónica Poentiz",
+          "email": "vpoenitz@austral.edu.ar"
+        },
+        {
+          "nombre": "María Coelho",
+          "email": "mcoelho@austral.edu.ar"
+        },
+        {
+          "nombre": "Sebastián Villar",
+          "email": "SVillar-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "María Gabriela León Bianchi",
+          "email": "mgleonbianchi@mail.austral.edu.ar"
+        }
+      ]
+    },
+    "POE": {
+      "sigla": "POE",
+      "nombre": "Principios de organización educativa",
+      "profesores": [
+        {
+          "nombre": "Julio Durand",
+          "email": "jdurand@austral.edu.ar"
+        },
+        {
+          "nombre": "Guillermo Cassanova",
+          "email": "gdcasanova@mail.austral.edu.a"
+        }
+      ]
+    },
+    "FPGE": {
+      "sigla": "FPGE",
+      "nombre": "Fundamentos pedagógicos de la gestión educativa",
+      "profesores": [
+        {
+          "nombre": "Graciela Hernandez",
+          "email": "GHernandez-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "María Victoria García Bouza",
+          "email": "MGarciaBouza-ext@austral.edu.ar"
+        }
+      ]
+    },
+    "EI": {
+      "sigla": "EI",
+      "nombre": "Evaluación institucional",
+      "profesores": [
+        {
+          "nombre": "Verónica Poenitz",
+          "email": "vpoenitz@austral.edu.ar"
+        },
+        {
+          "nombre": "Ana Kupervaser",
+          "email": "AKupervaser-ext@austral.edu.ar"
+        }
+      ]
+    },
+    "PCE": {
+      "sigla": "PCE",
+      "nombre": "Problemáticas contemporáneas de la educación",
+      "profesores": [
+        {
+          "nombre": "Fernando Gimenez Zapiola",
+          "email": "FGimenezZapiola-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "José María Randle (protocolo)",
+          "email": "JRandle@austral.edu.ar"
+        }
+      ]
+    },
+    "IIE": {
+      "sigla": "IIE",
+      "nombre": "Introducción a la investigación educativa",
+      "profesores": [
+        {
+          "nombre": "Marina Cuello",
+          "email": "mcuello@austral.edu.ar"
+        },
+        {
+          "nombre": "María Gabriela León Bianchi",
+          "email": "mgleonbianchi@mail.austral.edu.ar"
+        }
+      ]
+    },
+    "DDC": {
+      "sigla": "DDC",
+      "nombre": "Diseño y desarrollo de currículum",
+      "profesores": [
+        {
+          "nombre": "Ramiro Seré",
+          "email": "sere@mail.austral.edu.ar"
+        },
+        {
+          "nombre": "José Manuel Groesman",
+          "email": "JGroesman-ext@austral.edu.ar"
+        }
+      ]
+    },
+    "PLE": {
+      "sigla": "PLE",
+      "nombre": "Política y legislación educativa",
+      "profesores": [
+        {
+          "nombre": "Jesica Camara",
+          "email": "jcamara@mail.austral.edu.ar"
+        }
+      ]
+    },
+    "MIE": {
+      "sigla": "MIE",
+      "nombre": "Motivación e inteligencia emocional",
+      "profesores": [
+        {
+          "nombre": "Gastón del Rio",
+          "email": "GDelRio@austral.edu.ar"
+        }
+      ]
+    },
+    "AF": {
+      "sigla": "AF",
+      "nombre": "Análisis financiero",
+      "profesores": [
+        {
+          "nombre": "Mariana Teraussnnigg",
+          "email": "MTraussnigg-ext@austral.edu.ar"
+        }
+      ]
+    },
+    "LEE": {
+      "sigla": "LEE",
+      "nombre": "Liderazgo ético educativo",
+      "profesores": [
+        {
+          "nombre": "Juan Assirio",
+          "email": "jassirio@austral.edu.ar"
+        }
+      ]
+    },
+    "EDP": {
+      "sigla": "EDP",
+      "nombre": "Evaluación del desempeño profesional",
+      "profesores": [
+        {
+          "nombre": "Diana Bria",
+          "email": "dbria@mail.austral.edu.ar"
+        }
+      ]
+    }
+  }
+};
+
+        function mostrarTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tab === 'cronograma') mostrarCronograma();
+            else if (tab === 'materias') mostrarMaterias();
+            else if (tab === 'capacidades') mostrarCapacidades();
+            else if (tab === 'avisos') mostrarAvisos();
+        }
+
+        function cambiarAño(ano) {
+            anoActual = ano;
+            document.querySelectorAll('.year-btn').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Actualizar secciones activas
+            if (document.getElementById('cronograma').classList.contains('active')) mostrarCronograma();
+            if (document.getElementById('materias').classList.contains('active')) mostrarMaterias();
+        }
+
+        function fmtDate(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const [year, month, day] = dateStr.split('-');
+                const date = new Date(year, month - 1, day);
+                return date.toLocaleDateString('es-AR');
+            } catch {
+                return dateStr;
+            }
+        }
+
+        function getQuarterBadge(quarter) {
+            const badges = {
+                'Otoño': 'badge-otono',
+                'Invierno': 'badge-invierno',
+                'Primavera': 'badge-primavera',
+                'Verano': 'badge-verano'
+            };
+            return badges[quarter] || 'badge-otono';
+        }
+
+        function mostrarCronograma() {
+            const contenido = document.getElementById('cronogramaContent');
+            const cronograma = datosCompletos.cronograma.filter(c => c.a === anoActual);
+            
+            const quarteres = [...new Set(cronograma.map(c => c.q))];
+            
+            let html = '';
+            quarteres.forEach(quarter => {
+                const registros = cronograma.filter(c => c.q === quarter);
+                html += `<div class="quarter-section">
+                    <div class="quarter-title">
+                        <div class="quarter-badge ${getQuarterBadge(quarter)}">${quarter}</div>
+                        <h3>${quarter}</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sem</th>
+                                <th>Materia</th>
+                                <th>Día</th>
+                                <th>Fecha</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                
+                registros.forEach(r => {
+                    html += `<tr>
+                        <td>${r.s || '-'}</td>
+                        <td>${r.mat || '-'}</td>
+                        <td>${r.dia || '-'}</td>
+                        <td>${fmtDate(r.fc) || '-'}</td>
+                        <td>${r.obs || '-'}</td>
+                    </tr>`;
+                });
+                
+                html += `</tbody></table></div>`;
+            });
+            
+            contenido.innerHTML = html || '<div class="empty-state"><p>No hay registros de cronograma</p></div>';
+        }
+
+        function mostrarMaterias() {
+            const contenido = document.getElementById('materiasContent');
+            const materias = datosCompletos.materias;
+            
+            let html = '<div class="materias-grid">';
+            
+            Object.values(materias).forEach(mat => {
+                html += `<div class="materia-card">
+                    <div class="materia-sigla">${mat.sigla}</div>
+                    <div class="materia-nombre">${mat.nombre || mat.sigla}</div>
+                    <div><strong>Profesores:</strong></div>`;
+                
+                mat.profesores.forEach(prof => {
+                    html += `<div class="profesor-item">
+                        <div class="profesor-nombre">${prof.nombre}</div>`;
+                    if (prof.email) {
+                        html += `<a href="mailto:${prof.email}" class="profesor-email">${prof.email}</a>`;
+                    }
+                    html += `</div>`;
+                });
+                
+                html += `</div>`;
+            });
+            
+            html += '</div>';
+            contenido.innerHTML = html;
+        }
+
+        function mostrarCapacidades() {
+            const contenido = document.getElementById('capacidadesContent');
+            const capacidades = [
+                'Diseñar estrategias de enseñanza y aprendizaje efectivas',
+                'Gestionar recursos educativos de manera eficiente',
+                'Evaluar el desempeño institucional de forma integral',
+                'Fomentar liderazgo educativo transformacional',
+                'Implementar innovación en procesos educativos',
+                'Desarrollar análisis crítico de políticas educativas'
+            ];
+            
+            let html = '<ul style="line-height: 2; color: #555;">';
+            capacidades.forEach(cap => {
+                html += `<li>✓ ${cap}</li>`;
+            });
+            html += '</ul>';
+            
+            contenido.innerHTML = html;
+        }
+
+        function mostrarAvisos() {
+            const contenido = document.getElementById('avisosContent');
+            const avisos = [
+                {
+                    titulo: '¡Bienvenido al Portal LOGE!',
+                    contenido: 'Este es tu espacio para acceder a toda la información académica de la Licenciatura en Organización y Gestión Educativa.',
+                    fecha: new Date().toLocaleDateString('es-AR')
+                }
+            ];
+            
+            let html = '';
+            avisos.forEach(aviso => {
+                html += `<div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #667eea; margin-bottom: 20px; border-radius: 4px;">
+                    <h3 style="color: #333; margin-bottom: 10px;">${aviso.titulo}</h3>
+                    <p style="color: #666; margin-bottom: 10px;">${aviso.contenido}</p>
+                    <small style="color: #999;">Publicado: ${aviso.fecha}</small>
+                </div>`;
+            });
+            
+            contenido.innerHTML = html;
+        }
+
+        // Cargar datos iniciales
+        window.onload = () => {
+            mostrarCronograma();
+        };
+    </script>
+</body>
+</html>
