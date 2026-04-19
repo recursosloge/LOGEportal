@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal LOGE - Universidad Austral</title>
+    <title>Portal LOGE · Escuela de Educación · Universidad Austral</title>
+
+    <!-- SEO + social -->
+    <meta name="description" content="Portal académico de la Licenciatura en Organización y Gestión Educativa (LOGE) de la Escuela de Educación de la Universidad Austral: cronograma, materias, profesores y capacidades directivas.">
+    <meta name="author" content="Escuela de Educación - Universidad Austral">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta property="og:title" content="Portal LOGE · Universidad Austral">
+    <meta property="og:description" content="Cronograma, materias y capacidades directivas de la Licenciatura en Organización y Gestión Educativa.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_AR">
+    <meta name="twitter:card" content="summary">
+
+    <!-- Favicon (SVG inline, escalable) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231e3a5f'/%3E%3Ctext x='32' y='44' font-family='Georgia, serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EL%3C/text%3E%3C/svg%3E">
+
     <style>
         * {
             margin: 0;
@@ -11,11 +25,29 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --navy-900: #0f1e33;
+            --navy-800: #1e3a5f;
+            --navy-700: #2c4e7a;
+            --navy-100: #e6ecf4;
+            --gold: #c9a961;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gray-100);
+            color: var(--gray-900);
             min-height: 100vh;
             padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -23,25 +55,48 @@
             margin: 0 auto;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(15, 30, 51, 0.12);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-700) 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 44px 30px 36px;
             text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+        }
+
+        .header .brand {
+            font-size: 0.75em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: 14px;
+            font-weight: 500;
         }
 
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.95;
+            font-size: 1.05em;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .controls {
@@ -81,9 +136,9 @@
         }
 
         .tab-btn.active {
-            background: #667eea;
+            background: #1e3a5f;
             color: white;
-            border-color: #667eea;
+            border-color: #1e3a5f;
         }
 
         .year-selector {
@@ -103,9 +158,9 @@
         }
 
         .year-btn.active {
-            background: #667eea;
+            background: #1e3a5f;
             color: white;
-            border-color: #667eea;
+            border-color: #1e3a5f;
         }
 
         .content {
@@ -148,43 +203,73 @@
             font-size: 0.9em;
         }
 
-        .badge-otono { background-color: #d97706; }
-        .badge-invierno { background-color: #2563eb; }
-        .badge-primavera { background-color: #059669; }
-        .badge-verano { background-color: #dc2626; }
+        /* Colores estacionales (trimestres) */
+        .badge-otono    { background-color: #a16207; } /* marrón */
+        .badge-invierno { background-color: #0284c7; } /* celeste */
+        .badge-primavera{ background-color: #16a34a; } /* verde */
+        .badge-verano   { background-color: #ca8a04; } /* amarillo (dark para legibilidad) */
 
         .quarter-title h3 {
             color: #333;
             font-size: 1.4em;
         }
 
+        .table-wrapper {
+            margin-bottom: 30px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(15, 30, 51, 0.08);
+            border: 1px solid var(--gray-200);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: white;
         }
 
         thead {
-            background: #f5f5f5;
+            background: var(--gray-50);
         }
 
         th {
-            padding: 15px;
+            padding: 14px 15px;
             text-align: left;
             font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #ddd;
+            font-size: 0.82em;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--gray-700);
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
         }
 
         td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            color: #555;
+            padding: 13px 15px;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
         }
 
         tr:hover {
-            background: #f9f9f9;
+            background: var(--navy-100);
+        }
+
+        td.col-sigla {
+            font-weight: 600;
+            color: var(--navy-800);
+            white-space: nowrap;
+        }
+
+        td.col-obs {
+            font-style: italic;
+            color: var(--gray-500);
+            font-size: 0.92em;
         }
 
         .materias-grid {
@@ -206,12 +291,12 @@
         .materia-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
-            border-color: #667eea;
+            border-color: #1e3a5f;
         }
 
         .materia-sigla {
             display: inline-block;
-            background: #667eea;
+            background: #1e3a5f;
             color: white;
             padding: 4px 12px;
             border-radius: 4px;
@@ -230,7 +315,7 @@
         .profesor-item {
             background: white;
             padding: 10px;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #1e3a5f;
             margin-bottom: 8px;
             border-radius: 4px;
         }
@@ -243,7 +328,7 @@
 
         .profesor-email {
             font-size: 0.85em;
-            color: #667eea;
+            color: #1e3a5f;
             text-decoration: none;
         }
 
@@ -262,38 +347,782 @@
         }
 
         .info-message {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
+            background: var(--navy-100);
+            border-left: 4px solid var(--navy-800);
+            padding: 15px 18px;
             margin-bottom: 20px;
-            border-radius: 4px;
-            color: #1565c0;
+            border-radius: 6px;
+            color: var(--navy-900);
+            line-height: 1.55;
         }
 
+        /* Capacidades */
+        .capacidades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 22px;
+        }
+
+        .capacidad-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 22px 22px 20px;
+            box-shadow: 0 2px 6px rgba(15, 30, 51, 0.05);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .capacidad-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--navy-800);
+        }
+
+        .capacidad-card.q-otono::before    { background: #a16207; }
+        .capacidad-card.q-invierno::before { background: #0284c7; }
+        .capacidad-card.q-primavera::before{ background: #16a34a; }
+        .capacidad-card.q-verano::before   { background: #ca8a04; }
+
+        .capacidad-card:hover {
+            box-shadow: 0 8px 18px rgba(15, 30, 51, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .capacidad-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .capacidad-meta .quarter-badge {
+            padding: 5px 11px;
+            font-size: 0.72em;
+            letter-spacing: 0.4px;
+        }
+
+        .capacidad-meta .year-pill {
+            padding: 5px 11px;
+            border-radius: 6px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .capacidad-titulo {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: var(--navy-900);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .capacidad-desc {
+            color: var(--gray-700);
+            line-height: 1.6;
+            font-size: 0.95em;
+            margin-bottom: 16px;
+        }
+
+        .capacidad-section-title {
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+            margin-top: 14px;
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 5px 11px;
+            background: var(--navy-100);
+            color: var(--navy-800);
+            border-radius: 20px;
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+
+        .chip.virtue {
+            background: #fef3e8;
+            color: #8b5a1a;
+            border: 1px solid #f9d9a8;
+        }
+
+        /* ==========  Tokens de trimestre (fondo suave + borde + acento)  ========== */
+        :root {
+            --q-otono-bg:      #fef6e7;  --q-otono-border:     #a16207;  --q-otono-ink:     #78350f;
+            --q-invierno-bg:   #e0f2fe;  --q-invierno-border:  #0284c7;  --q-invierno-ink:  #075985;
+            --q-primavera-bg:  #dcfce7;  --q-primavera-border: #16a34a;  --q-primavera-ink: #14532d;
+            --q-verano-bg:     #fef9c3;  --q-verano-border:    #ca8a04;  --q-verano-ink:    #854d0e;
+        }
+
+        /* ==========  Dashboard (Inicio)  ========== */
+        .dashboard-welcome {
+            background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+            color: white;
+            padding: 22px 26px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-welcome h2 {
+            font-size: 1.3em;
+            margin: 0 0 4px;
+            font-weight: 600;
+        }
+
+        .dashboard-welcome p {
+            margin: 0;
+            opacity: 0.88;
+            font-size: 0.95em;
+        }
+
+        .dashboard-welcome .today-pill {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            letter-spacing: 0.3px;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+        }
+
+        .dashboard-grid > .full { grid-column: 1 / -1; }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 2px 5px rgba(15,30,51,0.04);
+        }
+
+        .dashboard-card h3 {
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-card h3 .count {
+            background: var(--navy-100);
+            color: var(--navy-800);
+            padding: 2px 9px;
+            border-radius: 10px;
+            font-size: 1em;
+            letter-spacing: 0;
+        }
+
+        .empty-state-small {
+            color: var(--gray-500);
+            font-size: 0.9em;
+            font-style: italic;
+            padding: 10px 0;
+        }
+
+        /* Lista de próximas clases (dashboard) */
+        .upcoming-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .upcoming-item {
+            display: flex;
+            align-items: stretch;
+            gap: 14px;
+            padding: 12px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            background: var(--gray-50);
+            transition: all 0.2s;
+        }
+
+        .upcoming-item:hover {
+            background: white;
+            border-color: var(--navy-800);
+            box-shadow: 0 3px 10px rgba(15,30,51,0.08);
+        }
+
+        .upcoming-item.is-today {
+            background: linear-gradient(90deg, #fff8e1, white);
+            border-color: var(--gold);
+            box-shadow: 0 3px 10px rgba(201,169,97,0.25);
+        }
+
+        .upcoming-item.is-tomorrow {
+            background: var(--navy-100);
+            border-color: var(--navy-700);
+        }
+
+        .upc-date {
+            flex: 0 0 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+        }
+
+        .upc-date .dow {
+            font-size: 0.65em;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .upc-date .day {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--navy-800);
+            line-height: 1;
+        }
+
+        .upc-date .mon {
+            font-size: 0.7em;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .upc-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        .upc-info .sigla {
+            font-weight: 700;
+            color: var(--navy-900);
+            font-size: 1.05em;
+            margin-bottom: 2px;
+        }
+
+        .upc-info .nombre {
+            color: var(--gray-700);
+            font-size: 0.88em;
+            margin-bottom: 4px;
+        }
+
+        .upc-info .meta {
+            color: var(--gray-500);
+            font-size: 0.78em;
+        }
+
+        .upc-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+        .upc-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .upc-tag.today { background: var(--gold); color: white; }
+        .upc-tag.tomorrow { background: var(--navy-800); color: white; }
+        .upc-tag.q-otono { background: var(--q-otono-bg); color: var(--q-otono-ink); }
+        .upc-tag.q-invierno { background: var(--q-invierno-bg); color: var(--q-invierno-ink); }
+        .upc-tag.q-primavera { background: var(--q-primavera-bg); color: var(--q-primavera-ink); }
+        .upc-tag.q-verano { background: var(--q-verano-bg); color: var(--q-verano-ink); }
+
+        /* Mensajes PC y entregas */
+        .mensaje-item, .entrega-item {
+            padding: 12px 14px;
+            border-left: 4px solid var(--navy-800);
+            background: var(--gray-50);
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 10px;
+        }
+
+        .mensaje-item.urgente, .entrega-item.proxima {
+            border-left-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .mensaje-titulo, .entrega-titulo {
+            font-weight: 700;
+            color: var(--navy-900);
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+
+        .mensaje-cuerpo, .entrega-cuerpo {
+            color: var(--gray-700);
+            font-size: 0.88em;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .mensaje-fecha, .entrega-fecha {
+            font-size: 0.76em;
+            color: var(--gray-500);
+        }
+
+        /* ==========  Cronograma infográfico  ========== */
+        .cronograma-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cronograma-toolbar input[type="search"] {
+            flex: 1;
+            min-width: 220px;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-family: inherit;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .cronograma-toolbar input[type="search"]:focus {
+            outline: none;
+            border-color: var(--navy-800);
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.12);
+        }
+
+        .cronograma-toolbar select {
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            padding: 10px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: white;
+            color: var(--navy-800);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy-800);
+            background: var(--navy-100);
+        }
+
+        .quarter-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 20px;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 0;
+            border-bottom: 3px solid;
+            flex-wrap: wrap;
+        }
+
+        .quarter-banner.q-otono    { background: var(--q-otono-bg);    border-bottom-color: var(--q-otono-border);    color: var(--q-otono-ink); }
+        .quarter-banner.q-invierno { background: var(--q-invierno-bg); border-bottom-color: var(--q-invierno-border); color: var(--q-invierno-ink); }
+        .quarter-banner.q-primavera{ background: var(--q-primavera-bg);border-bottom-color: var(--q-primavera-border);color: var(--q-primavera-ink); }
+        .quarter-banner.q-verano   { background: var(--q-verano-bg);   border-bottom-color: var(--q-verano-border);   color: var(--q-verano-ink); }
+        .quarter-banner.q-break    { background: var(--gray-100);      border-bottom-color: var(--gray-300);          color: var(--gray-700); }
+
+        .quarter-banner .qb-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .quarter-banner .qb-stats {
+            font-size: 0.82em;
+            opacity: 0.85;
+            font-weight: 600;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+            padding: 18px;
+            background: white;
+            border-radius: 0 0 10px 10px;
+            border: 1px solid var(--gray-200);
+            border-top: none;
+            margin-bottom: 28px;
+        }
+
+        .week-card {
+            position: relative;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 12px 12px 11px;
+            transition: all 0.22s;
+            cursor: default;
+            min-height: 108px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .week-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(15,30,51,0.1);
+            z-index: 2;
+        }
+
+        .week-card.q-otono     { border-left-color: var(--q-otono-border);    background: linear-gradient(180deg, var(--q-otono-bg) 0%, white 60%); }
+        .week-card.q-invierno  { border-left-color: var(--q-invierno-border); background: linear-gradient(180deg, var(--q-invierno-bg) 0%, white 60%); }
+        .week-card.q-primavera { border-left-color: var(--q-primavera-border);background: linear-gradient(180deg, var(--q-primavera-bg) 0%, white 60%); }
+        .week-card.q-verano    { border-left-color: var(--q-verano-border);   background: linear-gradient(180deg, var(--q-verano-bg) 0%, white 60%); }
+
+        .week-card.type-break, .week-card.type-recuperatorio {
+            background: var(--gray-50);
+            border-style: dashed;
+            opacity: 0.92;
+        }
+
+        .week-card.is-past {
+            opacity: 0.55;
+        }
+
+        .week-card.is-current {
+            border: 2px solid var(--gold);
+            background: linear-gradient(180deg, #fff8e1 0%, white 70%);
+            box-shadow: 0 0 0 4px rgba(201,169,97,0.25), 0 4px 14px rgba(201,169,97,0.35);
+            animation: pulseCurrent 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseCurrent {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(201,169,97,0.25), 0 4px 14px rgba(201,169,97,0.35); }
+            50%      { box-shadow: 0 0 0 7px rgba(201,169,97,0.15), 0 6px 18px rgba(201,169,97,0.4); }
+        }
+
+        .week-card.is-next {
+            border: 2px solid var(--navy-800);
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.12), 0 4px 12px rgba(30,58,95,0.18);
+        }
+
+        .week-card .wc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            gap: 6px;
+        }
+
+        .week-card .wc-sem {
+            font-size: 0.7em;
+            color: var(--gray-500);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .week-card .wc-flag {
+            font-size: 0.66em;
+            background: var(--gold);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .week-card.is-next .wc-flag { background: var(--navy-800); }
+
+        .week-card .wc-sigla {
+            font-size: 1.25em;
+            font-weight: 700;
+            color: var(--navy-800);
+            line-height: 1.1;
+            margin-bottom: 3px;
+        }
+
+        .week-card .wc-nombre {
+            font-size: 0.76em;
+            color: var(--gray-500);
+            line-height: 1.25;
+            margin-bottom: 8px;
+            min-height: 28px;
+        }
+
+        .week-card .wc-date {
+            margin-top: auto;
+            font-size: 0.82em;
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        .week-card .wc-date .dia { color: var(--gray-500); }
+
+        .week-card .wc-obs {
+            margin-top: 6px;
+            padding: 5px 7px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 4px;
+            font-size: 0.72em;
+            color: #9a3412;
+            line-height: 1.35;
+            font-style: italic;
+        }
+
+        .week-card.type-break .wc-sigla,
+        .week-card.type-recuperatorio .wc-sigla {
+            color: var(--gray-700);
+            font-size: 1em;
+        }
+
+        .cronograma-legend {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            margin-bottom: 22px;
+            font-size: 0.85em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gray-700);
+        }
+
+        .legend-swatch {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border-left: 3px solid;
+        }
+
+        .legend-swatch.q-otono     { background: var(--q-otono-bg);    border-left-color: var(--q-otono-border); }
+        .legend-swatch.q-invierno  { background: var(--q-invierno-bg); border-left-color: var(--q-invierno-border); }
+        .legend-swatch.q-primavera { background: var(--q-primavera-bg);border-left-color: var(--q-primavera-border); }
+        .legend-swatch.q-verano    { background: var(--q-verano-bg);   border-left-color: var(--q-verano-border); }
+
+        /* ==========  Materias agrupadas por trimestre  ========== */
+        .materia-section {
+            margin-bottom: 28px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        .materia-section-header {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            font-weight: 700;
+            flex-wrap: wrap;
+        }
+
+        .materia-section-header.q-otono     { background: var(--q-otono-bg);    color: var(--q-otono-ink); }
+        .materia-section-header.q-invierno  { background: var(--q-invierno-bg); color: var(--q-invierno-ink); }
+        .materia-section-header.q-primavera { background: var(--q-primavera-bg);color: var(--q-primavera-ink); }
+        .materia-section-header.q-verano    { background: var(--q-verano-bg);   color: var(--q-verano-ink); }
+        .materia-section-header.q-transversal { background: var(--navy-100); color: var(--navy-900); }
+
+        .materia-section-header .msh-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+        }
+
+        .materia-section-header .msh-stats {
+            font-size: 0.82em;
+            opacity: 0.85;
+        }
+
+        .materia-section .materias-grid {
+            margin-bottom: 0;
+            padding: 18px;
+            background: white;
+        }
+
+        .materia-card.q-otono     { border-top: 3px solid var(--q-otono-border); }
+        .materia-card.q-invierno  { border-top: 3px solid var(--q-invierno-border); }
+        .materia-card.q-primavera { border-top: 3px solid var(--q-primavera-border); }
+        .materia-card.q-verano    { border-top: 3px solid var(--q-verano-border); }
+        .materia-card.q-transversal { border-top: 3px solid var(--navy-800); }
+
+        .materia-sigla.q-otono     { background: var(--q-otono-border); }
+        .materia-sigla.q-invierno  { background: var(--q-invierno-border); }
+        .materia-sigla.q-primavera { background: var(--q-primavera-border); }
+        .materia-sigla.q-verano    { background: var(--q-verano-border); }
+
         @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .header {
+                padding: 30px 20px 24px;
+            }
+
+            .header h1 {
+                font-size: 1.9em;
+            }
+
+            .header .brand {
+                font-size: 0.7em;
+                letter-spacing: 2px;
+            }
+
             .controls {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 20px;
+                gap: 14px;
             }
 
             .tab-buttons {
                 flex-wrap: wrap;
+                min-width: 0;
+                gap: 8px;
             }
 
-            .header h1 {
-                font-size: 1.8em;
+            .tab-btn {
+                flex: 1 1 45%;
+                padding: 10px 12px;
+                font-size: 0.88em;
+            }
+
+            .content {
+                padding: 20px;
             }
 
             table {
-                font-size: 0.9em;
+                font-size: 0.88em;
             }
 
             th, td {
-                padding: 8px 10px;
+                padding: 10px 12px;
             }
 
             .materias-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-welcome {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .week-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .cronograma-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cronograma-toolbar input[type="search"],
+            .cronograma-toolbar select,
+            .cronograma-toolbar .btn-secondary {
+                width: 100%;
+            }
+
+            .capacidades-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: 100%;
+            }
+
+            .controls,
+            .tab-buttons,
+            .year-selector {
+                display: none;
+            }
+
+            .tab-content {
+                display: block !important;
+            }
+
+            .header {
+                background: var(--navy-800) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .table-wrapper {
+                overflow: visible;
+                page-break-inside: auto;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            tr {
+                page-break-inside: avoid;
             }
         }
     </style>
@@ -301,41 +1130,28 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="brand">Universidad Austral · Escuela de Educación</div>
             <h1>Portal LOGE</h1>
-            <p>Universidad Austral - Licenciatura en Organización y Gestión Educativa</p>
+            <p>Licenciatura en Organización y Gestión Educativa</p>
         </div>
 
         <div class="controls">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="mostrarTab('inicio')">Inicio</button>
-                <button class="tab-btn" onclick="mostrarTab('cronograma')">Cronograma</button>
-                <button class="tab-btn" onclick="mostrarTab('materias')">Materias</button>
-                <button class="tab-btn" onclick="mostrarTab('capacidades')">Capacidades</button>
-                <button class="tab-btn" onclick="mostrarTab('avisos')">Avisos</button>
+            <div class="tab-buttons" role="tablist" aria-label="Secciones del portal">
+                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="inicio" onclick="mostrarTab('inicio', this)">Inicio</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="cronograma" onclick="mostrarTab('cronograma', this)">Cronograma</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="materias" onclick="mostrarTab('materias', this)">Materias</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="capacidades" onclick="mostrarTab('capacidades', this)">Capacidades</button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="avisos" onclick="mostrarTab('avisos', this)">Avisos</button>
             </div>
-            <div class="year-selector">
-                <button class="year-btn active" onclick="cambiarAño(1)">1° año</button>
-                <button class="year-btn" onclick="cambiarAño(2)">2° año</button>
+            <div class="year-selector" role="group" aria-label="Seleccionar año">
+                <button class="year-btn active" aria-pressed="true" onclick="cambiarAño(1, this)">1° año</button>
+                <button class="year-btn" aria-pressed="false" onclick="cambiarAño(2, this)">2° año</button>
             </div>
         </div>
 
         <div class="content">
             <div id="inicio" class="tab-content active">
-                <div class="info-message">
-                    <strong>¡Bienvenido al Portal LOGE!</strong>
-                    Aquí encontrarás toda la información sobre el cronograma de clases, materias, competencias docentes y avisos importantes de tu carrera.
-                </div>
-                <h2>Licenciatura en Organización y Gestión Educativa</h2>
-                <p style="margin-top: 20px; color: #666; line-height: 1.6;">
-                    Este portal te proporciona acceso a toda la información académica que necesitas para tu formación en la Licenciatura en Organización y Gestión Educativa (LOGE). 
-                    Utiliza los botones en la parte superior para navegar entre secciones.
-                </p>
-                <ul style="margin-top: 20px; margin-left: 20px; color: #666; line-height: 1.8;">
-                    <li><strong>Cronograma:</strong> Visualiza todas las clases planificadas por trimestre</li>
-                    <li><strong>Materias:</strong> Consulta información sobre los cursos y sus profesores</li>
-                    <li><strong>Capacidades:</strong> Conoce las competencias docentes que desarrollarás</li>
-                    <li><strong>Avisos:</strong> Mantente informado sobre noticias y comunicados importantes</li>
-                </ul>
+                <div id="inicioContent"></div>
             </div>
 
             <div id="cronograma" class="tab-content">
@@ -362,6 +1178,33 @@
 
     <script>
         let anoActual = 1;
+        let filtroCronograma = { texto: '', materia: '' };
+
+        // ============================================================
+        //  Mensajes del PC (Profesor Coordinador) - editables a mano
+        // ============================================================
+        const MENSAJES_PC = [
+            // Ejemplo (descomentar y editar):
+            // {
+            //   fecha: '2026-04-15',
+            //   titulo: 'Reunión de coordinación',
+            //   contenido: 'Nos juntamos el viernes a las 18hs por Zoom.',
+            //   urgente: false
+            // }
+        ];
+
+        // ============================================================
+        //  Entregas / Evaluaciones de desempeño - editables a mano
+        // ============================================================
+        const ENTREGAS = [
+            // Ejemplo (descomentar y editar):
+            // {
+            //   fecha: '2026-04-25',
+            //   materia: 'POE',
+            //   titulo: 'Entrega del TP 1',
+            //   descripcion: 'Ensayo sobre principios de organización educativa.'
+            // }
+        ];
 
         // DATOS COMPLETOS EMBEBIDOS
         const datosCompletos = {
@@ -1352,7 +2195,7 @@
         },
         {
           "nombre": "Pedro Leon Vivas",
-          "email": "PVivas-ext@austral.edu.a"
+          "email": "PVivas-ext@austral.edu.ar"
         }
       ]
     },
@@ -1371,7 +2214,7 @@
       "nombre": "Administración financiera de los recursos",
       "profesores": [
         {
-          "nombre": "Mariana Teraussnnigg",
+          "nombre": "Mariana Traussnigg",
           "email": "MTraussnigg-ext@austral.edu.ar"
         },
         {
@@ -1386,15 +2229,15 @@
     },
     "DPSI": {
       "sigla": "DPSI",
-      "nombre": "Diagnóstico, planiamiento y supervisión institucional",
+      "nombre": "Diagnóstico, planeamiento y supervisión institucional",
       "profesores": [
+        {
+          "nombre": "Pedro Leon Vivas",
+          "email": "PVivas-ext@austral.edu.ar"
+        },
         {
           "nombre": "Diana Bria",
           "email": "dbria@mail.austral.edu.ar"
-        },
-        {
-          "nombre": "Pedro Leon Vivas",
-          "email": "PVivas-ext@austral.edu.a"
         }
       ]
     },
@@ -1418,7 +2261,7 @@
       "profesores": [
         {
           "nombre": "Gastón del Rio",
-          "email": "GDelRio@austral.edu.a"
+          "email": "GDelRio@austral.edu.ar"
         }
       ]
     },
@@ -1432,7 +2275,7 @@
         },
         {
           "nombre": "Marina Leitner",
-          "email": "MLeitner-ext@austral.edu.a"
+          "email": "MLeitner-ext@austral.edu.ar"
         }
       ]
     },
@@ -1451,7 +2294,7 @@
       "nombre": "Taller de integración",
       "profesores": [
         {
-          "nombre": "Verónica Poentiz",
+          "nombre": "Verónica Poenitz",
           "email": "vpoenitz@austral.edu.ar"
         },
         {
@@ -1478,7 +2321,7 @@
         },
         {
           "nombre": "Guillermo Cassanova",
-          "email": "gdcasanova@mail.austral.edu.a"
+          "email": "gdcasanova@mail.austral.edu.ar"
         }
       ]
     },
@@ -1564,27 +2407,21 @@
     },
     "MIE": {
       "sigla": "MIE",
-      "nombre": "Motivación e inteligencia emocional",
+      "nombre": "Metodología de la investigación educativa",
       "profesores": [
         {
-          "nombre": "Gastón del Rio",
-          "email": "GDelRio@austral.edu.ar"
+          "nombre": "Marina Cuello",
+          "email": "mcuello@austral.edu.ar"
+        },
+        {
+          "nombre": "María Gabriela León Bianchi",
+          "email": "mgleonbianchi@mail.austral.edu.ar"
         }
       ]
     },
     "AF": {
       "sigla": "AF",
-      "nombre": "Análisis financiero",
-      "profesores": [
-        {
-          "nombre": "Mariana Teraussnnigg",
-          "email": "MTraussnigg-ext@austral.edu.ar"
-        }
-      ]
-    },
-    "LEE": {
-      "sigla": "LEE",
-      "nombre": "Liderazgo ético educativo",
+      "nombre": "Antropología filosófica",
       "profesores": [
         {
           "nombre": "Juan Assirio",
@@ -1592,51 +2429,86 @@
         }
       ]
     },
-    "EDP": {
-      "sigla": "EDP",
-      "nombre": "Evaluación del desempeño profesional",
+    "LEE": {
+      "sigla": "LEE",
+      "nombre": "Liderazgo de equipos educativos",
       "profesores": [
         {
-          "nombre": "Diana Bria",
-          "email": "dbria@mail.austral.edu.ar"
+          "nombre": "Pedro Leon Vivas",
+          "email": "PVivas-ext@austral.edu.ar"
+        },
+        {
+          "nombre": "Guillermo Luquez",
+          "email": "gluquez@austral.edu.ar"
+        }
+      ]
+    },
+    "EDP": {
+      "sigla": "EDP",
+      "nombre": "Ética y deontología profesional",
+      "profesores": [
+        {
+          "nombre": "Juan Assirio",
+          "email": "jassirio@austral.edu.ar"
         }
       ]
     }
   }
 };
 
-        function mostrarTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tab).classList.add('active');
-            event.target.classList.add('active');
-
-            if (tab === 'cronograma') mostrarCronograma();
-            else if (tab === 'materias') mostrarMaterias();
-            else if (tab === 'capacidades') mostrarCapacidades();
-            else if (tab === 'avisos') mostrarAvisos();
+        // ============================================================
+        //  Helpers
+        // ============================================================
+        function parseISO(s) {
+            if (!s) return null;
+            const [y, m, d] = s.split('-').map(n => parseInt(n, 10));
+            if (!y || !m || !d) return null;
+            const dt = new Date(y, m - 1, d);
+            dt.setHours(0, 0, 0, 0);
+            return dt;
         }
 
-        function cambiarAño(ano) {
-            anoActual = ano;
-            document.querySelectorAll('.year-btn').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Actualizar secciones activas
-            if (document.getElementById('cronograma').classList.contains('active')) mostrarCronograma();
-            if (document.getElementById('materias').classList.contains('active')) mostrarMaterias();
+        function hoy() {
+            const d = new Date();
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+
+        function diffDias(d1, d2) {
+            return Math.round((d1 - d2) / (1000 * 60 * 60 * 24));
         }
 
         function fmtDate(dateStr) {
-            if (!dateStr) return '';
-            try {
-                const [year, month, day] = dateStr.split('-');
-                const date = new Date(year, month - 1, day);
-                return date.toLocaleDateString('es-AR');
-            } catch {
-                return dateStr;
-            }
+            const d = parseISO(dateStr);
+            if (!d) return '';
+            return d.toLocaleDateString('es-AR');
+        }
+
+        function fmtDow(d) {
+            if (!d) return '';
+            return d.toLocaleDateString('es-AR', { weekday: 'short' }).replace('.', '');
+        }
+
+        function fmtDayNum(d) {
+            return d ? d.getDate() : '';
+        }
+
+        function fmtMonth(d) {
+            if (!d) return '';
+            return d.toLocaleDateString('es-AR', { month: 'short' }).replace('.', '');
+        }
+
+        function fmtFull(d) {
+            if (!d) return '';
+            return d.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function normalizarQuarter(q) {
+            if (!q) return '';
+            return q.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, '-');
         }
 
         function getQuarterBadge(quarter) {
@@ -1649,93 +2521,380 @@
             return badges[quarter] || 'badge-otono';
         }
 
+        // Mapeo sigla de materia → {quarter, anio, transversal}
+        // Se deriva dinámicamente desde CAPACIDADES_LOGE (y el cronograma como fallback).
+        function getMateriaInfo(sigla) {
+            const apariciones = [];
+            (typeof CAPACIDADES_LOGE !== 'undefined' ? CAPACIDADES_LOGE : []).forEach(c => {
+                if (c.materias.includes(sigla)) {
+                    apariciones.push({ quarter: c.quarter, anio: c.anio });
+                }
+            });
+            // Fallback: derivar desde el cronograma si la sigla coincide
+            if (apariciones.length === 0) {
+                (datosCompletos.cronograma || []).forEach(c => {
+                    if (c.mat === sigla && c.t === 'Clase') {
+                        apariciones.push({ quarter: c.q, anio: c.a });
+                    }
+                });
+            }
+            // Deduplicar
+            const seen = new Set();
+            const unicas = apariciones.filter(a => {
+                const k = a.anio + '|' + a.quarter;
+                if (seen.has(k)) return false;
+                seen.add(k);
+                return true;
+            });
+            return {
+                apariciones: unicas,
+                transversal: unicas.length > 1,
+                anios: [...new Set(unicas.map(a => a.anio))]
+            };
+        }
+
+        // Obtener quarter activo para una clase (del cronograma) según la fecha
+        function getQuarterDeClase(clase) {
+            return clase.q;
+        }
+
+        // Escape seguro para inyectar texto en HTML
+        function escapeHTML(s) {
+            if (s == null) return '';
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ============================================================
+        //  Navegación
+        // ============================================================
+        function mostrarTab(tab, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+                el.setAttribute('aria-selected', 'false');
+            });
+
+            document.getElementById(tab).classList.add('active');
+            const activeBtn = btn || (event && event.target);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-selected', 'true');
+            }
+
+            if (tab === 'inicio') mostrarInicio();
+            else if (tab === 'cronograma') mostrarCronograma();
+            else if (tab === 'materias') mostrarMaterias();
+            else if (tab === 'capacidades') mostrarCapacidades();
+            else if (tab === 'avisos') mostrarAvisos();
+        }
+
+        function cambiarAño(ano, btn) {
+            anoActual = ano;
+            document.querySelectorAll('.year-btn').forEach(el => {
+                el.classList.remove('active');
+                el.setAttribute('aria-pressed', 'false');
+            });
+            const activeBtn = btn || (event && event.target);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-pressed', 'true');
+            }
+
+            // Refrescar secciones activas
+            if (document.getElementById('inicio').classList.contains('active')) mostrarInicio();
+            if (document.getElementById('cronograma').classList.contains('active')) mostrarCronograma();
+            if (document.getElementById('materias').classList.contains('active')) mostrarMaterias();
+            if (document.getElementById('capacidades').classList.contains('active')) mostrarCapacidades();
+        }
+
         function mostrarCronograma() {
             const contenido = document.getElementById('cronogramaContent');
             const cronograma = datosCompletos.cronograma.filter(c => c.a === anoActual);
-            
-            const quarteres = [...new Set(cronograma.map(c => c.q))];
-            
-            let html = '';
-            quarteres.forEach(quarter => {
-                const registros = cronograma.filter(c => c.q === quarter);
-                html += `<div class="quarter-section">
-                    <div class="quarter-title">
-                        <div class="quarter-badge ${getQuarterBadge(quarter)}">${quarter}</div>
-                        <h3>${quarter}</h3>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Sem</th>
-                                <th>Materia</th>
-                                <th>Día</th>
-                                <th>Fecha</th>
-                                <th>Observaciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-                
-                registros.forEach(r => {
-                    html += `<tr>
-                        <td>${r.s || '-'}</td>
-                        <td>${r.mat || '-'}</td>
-                        <td>${r.dia || '-'}</td>
-                        <td>${fmtDate(r.fc) || '-'}</td>
-                        <td>${r.obs || '-'}</td>
-                    </tr>`;
-                });
-                
-                html += `</tbody></table></div>`;
+            const hoyD = hoy();
+
+            // Próxima clase (la primera futura respecto de hoy)
+            const futuras = cronograma
+                .filter(c => c.fc && parseISO(c.fc) >= hoyD)
+                .sort((a, b) => parseISO(a.fc) - parseISO(b.fc));
+            const proximaFecha = futuras.length ? futuras[0].fc : null;
+
+            // Aplicar filtros
+            const texto = (filtroCronograma.texto || '').toLowerCase();
+            const matFiltro = filtroCronograma.materia || '';
+            const filtradas = cronograma.filter(c => {
+                if (matFiltro && c.mat !== matFiltro) return false;
+                if (texto) {
+                    const hay = [c.mat, c.dia, c.fc, c.obs, c.q].join(' ').toLowerCase();
+                    if (!hay.includes(texto)) return false;
+                }
+                return true;
             });
-            
-            contenido.innerHTML = html || '<div class="empty-state"><p>No hay registros de cronograma</p></div>';
+
+            // Materias únicas para el filtro
+            const materiasUnicas = [...new Set(cronograma.map(c => c.mat).filter(Boolean))].sort();
+
+            const quarterOrder = ['Otoño', 'Invierno', 'Primavera', 'Verano'];
+            const quarteres = quarterOrder.filter(q => cronograma.some(c => c.q === q));
+
+            let html = `
+                <div class="cronograma-toolbar" role="toolbar" aria-label="Herramientas del cronograma">
+                    <input type="search" id="cronoSearch" class="crono-search"
+                        placeholder="Buscar por materia, día u observación…"
+                        value="${escapeHTML(filtroCronograma.texto || '')}"
+                        aria-label="Buscar en cronograma" oninput="filtrarCronograma()">
+                    <select id="cronoMatFilter" class="crono-select" aria-label="Filtrar por materia" onchange="filtrarCronograma()">
+                        <option value="">Todas las materias</option>
+                        ${materiasUnicas.map(m => `<option value="${m}" ${m === matFiltro ? 'selected' : ''}>${m}</option>`).join('')}
+                    </select>
+                    <button type="button" class="btn-secondary" onclick="exportarICS()" aria-label="Exportar a calendario">📅 Exportar .ics</button>
+                    <button type="button" class="btn-secondary" onclick="window.print()" aria-label="Imprimir cronograma">🖨 Imprimir</button>
+                </div>
+                <div class="cronograma-legend" aria-label="Referencias">
+                    <span class="legend-item q-otono">Otoño</span>
+                    <span class="legend-item q-invierno">Invierno</span>
+                    <span class="legend-item q-primavera">Primavera</span>
+                    <span class="legend-item q-verano">Verano</span>
+                    <span class="legend-dot is-current"></span><span class="legend-label">Hoy</span>
+                    <span class="legend-dot is-next"></span><span class="legend-label">Próxima</span>
+                    <span class="legend-dot is-past"></span><span class="legend-label">Pasada</span>
+                </div>
+            `;
+
+            let totalRenderizadas = 0;
+            quarteres.forEach(quarter => {
+                const qNorm = normalizarQuarter(quarter);
+                const regs = filtradas.filter(c => c.q === quarter);
+                if (!regs.length) return;
+                totalRenderizadas += regs.length;
+
+                html += `<section class="quarter-banner q-${qNorm}" aria-label="Trimestre ${quarter}">
+                    <h3>${quarter}</h3>
+                    <span class="quarter-count">${regs.length} ${regs.length === 1 ? 'clase' : 'clases'}</span>
+                </section>
+                <div class="week-grid">`;
+
+                regs.forEach(r => {
+                    const classes = ['week-card', `q-${qNorm}`];
+                    let dateObj = null;
+                    if (r.fc) {
+                        dateObj = parseISO(r.fc);
+                        if (dateObj < hoyD) classes.push('is-past');
+                        if (dateObj.getTime() === hoyD.getTime()) classes.push('is-current');
+                        if (proximaFecha && r.fc === proximaFecha && dateObj.getTime() !== hoyD.getTime()) classes.push('is-next');
+                    }
+                    const obsLow = (r.obs || '').toLowerCase();
+                    if (obsLow.includes('receso') || obsLow.includes('sin clases') || obsLow.includes('feriado')) classes.push('type-break');
+                    if (obsLow.includes('recuperatorio') || obsLow.includes('recuper')) classes.push('type-recuperatorio');
+
+                    html += `<article class="${classes.join(' ')}" ${dateObj ? `data-date="${r.fc}"` : ''} aria-label="${escapeHTML((r.mat || 'Clase') + ' · semana ' + (r.s || ''))}">
+                        <header class="week-card-head">
+                            <span class="wc-sem">Sem ${r.s || '-'}</span>
+                            <span class="wc-dow">${dateObj ? fmtDow(dateObj) : (r.dia || '')}</span>
+                        </header>
+                        <div class="wc-date">
+                            <span class="wc-day">${dateObj ? fmtDayNum(dateObj) : '?'}</span>
+                            <span class="wc-month">${dateObj ? fmtMonth(dateObj) : ''}</span>
+                        </div>
+                        <div class="wc-sigla">${r.mat || '—'}</div>
+                        ${r.obs ? `<div class="wc-obs">${escapeHTML(r.obs)}</div>` : ''}
+                    </article>`;
+                });
+
+                html += `</div>`;
+            });
+
+            if (!totalRenderizadas) {
+                html += '<div class="empty-state"><p>No hay clases que coincidan con tu búsqueda.</p></div>';
+            }
+
+            contenido.innerHTML = html;
+
+            // Restaurar foco en el buscador si el usuario estaba tipeando
+            const search = document.getElementById('cronoSearch');
+            if (search && filtroCronograma.texto) {
+                search.focus();
+                try { search.setSelectionRange(search.value.length, search.value.length); } catch(e) {}
+            }
+        }
+
+        function renderMateriaCard(mat, qNorm) {
+            let html = `<div class="materia-card${qNorm ? ' q-' + qNorm : ''}">
+                <div class="materia-sigla">${mat.sigla}</div>
+                <div class="materia-nombre">${mat.nombre || mat.sigla}</div>
+                <div class="materia-prof-label"><strong>Profesores</strong></div>`;
+            (mat.profesores || []).forEach(prof => {
+                html += `<div class="profesor-item">
+                    <div class="profesor-nombre">${escapeHTML(prof.nombre || '')}</div>`;
+                if (prof.email) {
+                    html += `<a href="mailto:${prof.email}" class="profesor-email">${prof.email}</a>`;
+                }
+                html += `</div>`;
+            });
+            html += `</div>`;
+            return html;
         }
 
         function mostrarMaterias() {
             const contenido = document.getElementById('materiasContent');
-            const materias = datosCompletos.materias;
-            
-            let html = '<div class="materias-grid">';
-            
-            Object.values(materias).forEach(mat => {
-                html += `<div class="materia-card">
-                    <div class="materia-sigla">${mat.sigla}</div>
-                    <div class="materia-nombre">${mat.nombre || mat.sigla}</div>
-                    <div><strong>Profesores:</strong></div>`;
-                
-                mat.profesores.forEach(prof => {
-                    html += `<div class="profesor-item">
-                        <div class="profesor-nombre">${prof.nombre}</div>`;
-                    if (prof.email) {
-                        html += `<a href="mailto:${prof.email}" class="profesor-email">${prof.email}</a>`;
-                    }
-                    html += `</div>`;
-                });
-                
-                html += `</div>`;
+            const materias = datosCompletos.materias || {};
+
+            // Mapear sigla → quarter en base al cronograma del año actual
+            const cronoAno = datosCompletos.cronograma.filter(c => c.a === anoActual);
+            const siglaToQuarter = {};
+            cronoAno.forEach(c => {
+                if (c.mat && !siglaToQuarter[c.mat]) siglaToQuarter[c.mat] = c.q;
             });
-            
-            html += '</div>';
+
+            const quarterOrder = ['Otoño', 'Invierno', 'Primavera', 'Verano'];
+            const grupos = {};
+            const sinGrupo = [];
+
+            Object.values(materias).forEach(mat => {
+                const q = siglaToQuarter[mat.sigla];
+                if (q) {
+                    if (!grupos[q]) grupos[q] = [];
+                    grupos[q].push(mat);
+                } else {
+                    // Sólo mostrar transversales/otras que hagan sentido para el año actual
+                    // (las que no aparecen en cronograma del año, se relegan)
+                    sinGrupo.push(mat);
+                }
+            });
+
+            let html = `<div class="info-message">
+                Materias agrupadas por trimestre · <strong>Año ${anoActual}</strong>.
+                Cada color corresponde a un trimestre: <span class="chip q-otono">Otoño</span>
+                <span class="chip q-invierno">Invierno</span>
+                <span class="chip q-primavera">Primavera</span>
+                <span class="chip q-verano">Verano</span>.
+            </div>`;
+
+            let algo = false;
+            quarterOrder.forEach(quarter => {
+                if (!grupos[quarter] || !grupos[quarter].length) return;
+                algo = true;
+                const qNorm = normalizarQuarter(quarter);
+                html += `<section class="materia-section q-${qNorm}">
+                    <header class="materia-section-header q-${qNorm}">
+                        <h3>${quarter}</h3>
+                        <span>${grupos[quarter].length} ${grupos[quarter].length === 1 ? 'asignatura' : 'asignaturas'}</span>
+                    </header>
+                    <div class="materias-grid">`;
+                grupos[quarter].forEach(mat => {
+                    html += renderMateriaCard(mat, qNorm);
+                });
+                html += `</div></section>`;
+            });
+
+            if (sinGrupo.length) {
+                html += `<section class="materia-section">
+                    <header class="materia-section-header">
+                        <h3>Transversales / Otros años</h3>
+                        <span>${sinGrupo.length} ${sinGrupo.length === 1 ? 'asignatura' : 'asignaturas'}</span>
+                    </header>
+                    <div class="materias-grid">`;
+                sinGrupo.forEach(mat => {
+                    html += renderMateriaCard(mat, '');
+                });
+                html += `</div></section>`;
+                algo = true;
+            }
+
+            if (!algo) {
+                html += '<div class="empty-state"><p>No hay materias para mostrar.</p></div>';
+            }
+
             contenido.innerHTML = html;
         }
 
+        const CAPACIDADES_LOGE = [
+            {
+                quarter: 'Otoño',
+                anio: 1,
+                titulo: 'Capacidad reflexiva e integradora',
+                descripcion: 'Interpretar y analizar críticamente los fundamentos antropológicos, epistemológicos y éticos que sustentan los proyectos educativos y las propuestas curriculares. Implica un discernimiento racional orientado a la toma de decisiones coherentes con una visión integral del ser humano (bio-psíquica, espiritual y social), reflexionando en la acción y sobre la acción para la mejora continua.',
+                materias: ['POE', 'AF', 'FPGE', 'TI'],
+                virtudes: ['Rigurosidad', 'Apertura mental', 'Firmeza']
+            },
+            {
+                quarter: 'Invierno',
+                anio: 1,
+                titulo: 'Capacidad de diagnóstico, planeamiento, evaluación y supervisión institucional',
+                descripcion: 'Analizar críticamente los paradigmas actuales que influyen en la educación, realizar diagnósticos precisos para identificar fortalezas y amenazas, establecer objetivos prioritarios y diseñar planes de acción de mejora continua. Incluye mecanismos de evaluación sistemática que permiten medir impacto, ajustar estrategias y redefinir planes según las necesidades detectadas.',
+                materias: ['MIE', 'DPSI', 'EI', 'TI'],
+                virtudes: ['Autonomía intelectual', 'Perseverancia intelectual', 'Rigurosidad']
+            },
+            {
+                quarter: 'Primavera',
+                anio: 1,
+                titulo: 'Capacidad de planeamiento institucional y curricular',
+                descripcion: 'Conceptualizar y analizar críticamente teorías y modelos de enseñanza-aprendizaje que orienten la práctica directiva y docente hacia la concreción de aprendizajes significativos. Implica identificar problemas y necesidades educativas prioritarias, diseñar planes flexibles y formular criterios de evaluación rigurosos para monitorear prácticas pedagógicas y directivas.',
+                materias: ['DDC', 'PLE', 'PCE', 'TI'],
+                virtudes: ['Creatividad intelectual', 'Apertura mental']
+            },
+            {
+                quarter: 'Otoño',
+                anio: 2,
+                titulo: 'Capacidad de gestión y organización institucional',
+                descripcion: 'Construir una visión estratégica compartida, involucrando a todos los actores en la definición de objetivos comunes alineados con los desafíos actuales. Se materializa en el liderazgo de procesos de planeamiento estratégico, la anticipación de escenarios complejos, la asignación eficaz de tareas, el monitoreo de proyectos y una comunicación institucional clara y transparente que promueva una cultura colaborativa.',
+                materias: ['PGE', 'AFR', 'CI', 'TI'],
+                virtudes: ['Humildad intelectual', 'Perseverancia', 'Valentía']
+            },
+            {
+                quarter: 'Invierno',
+                anio: 2,
+                titulo: 'Capacidad de liderazgo de personas y equipos',
+                descripcion: 'Motivar, conducir y alinear a las personas y equipos hacia metas comunes, consolidando una cultura de colaboración, respeto mutuo y trabajo compartido. Implica un liderazgo colegiado con delegación efectiva, comunicación clara, empatía, negociación y mediación, fomentando el desarrollo personal y profesional de cada integrante.',
+                materias: ['GSET', 'LEE', 'AE', 'TI'],
+                virtudes: ['Ecuanimidad intelectual', 'Caridad intelectual', 'Empatía intelectual', 'Confianza intelectual', 'Respeto intelectual', 'Generosidad intelectual']
+            },
+            {
+                quarter: 'Primavera',
+                anio: 2,
+                titulo: 'Capacidad de gestión del cambio para la mejora',
+                descripcion: 'Liderar e implementar procesos de transformación institucional orientados a la mejora continua. Parte de un diagnóstico crítico y contextualizado para diseñar estrategias sostenibles, comunicar con claridad los objetivos del cambio y buscar el compromiso de toda la organización, facilitando la adaptación y la resiliencia ante la incertidumbre.',
+                materias: ['GIE', 'EDP', 'Electiva', 'TI'],
+                virtudes: ['Curiosidad intelectual', 'Valentía intelectual', 'Creatividad']
+            }
+        ];
+
         function mostrarCapacidades() {
             const contenido = document.getElementById('capacidadesContent');
-            const capacidades = [
-                'Diseñar estrategias de enseñanza y aprendizaje efectivas',
-                'Gestionar recursos educativos de manera eficiente',
-                'Evaluar el desempeño institucional de forma integral',
-                'Fomentar liderazgo educativo transformacional',
-                'Implementar innovación en procesos educativos',
-                'Desarrollar análisis crítico de políticas educativas'
-            ];
-            
-            let html = '<ul style="line-height: 2; color: #555;">';
-            capacidades.forEach(cap => {
-                html += `<li>✓ ${cap}</li>`;
+
+            const capsDelAnio = CAPACIDADES_LOGE.filter(c => c.anio === anoActual);
+
+            let html = `<div class="info-message">
+                <strong>Capacidades directivas LOGE.</strong>
+                Estas capacidades se trabajan transversalmente durante toda la cursada. En cada trimestre se pone énfasis en una de las seis, vinculando los desempeños de las 3 asignaturas del trimestre con el producto del Taller de Integración (TI).
+            </div>
+            <div class="capacidades-grid">`;
+
+            capsDelAnio.forEach(cap => {
+                const qClass = 'q-' + cap.quarter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                html += `<div class="capacidad-card ${qClass}">
+                    <div class="capacidad-meta">
+                        <span class="quarter-badge ${getQuarterBadge(cap.quarter)}">${cap.quarter}</span>
+                        <span class="year-pill">Año ${cap.anio}</span>
+                    </div>
+                    <div class="capacidad-titulo">${cap.titulo}</div>
+                    <div class="capacidad-desc">${cap.descripcion}</div>
+                    <div class="capacidad-section-title">Asignaturas que la promueven</div>
+                    <div class="chip-group">
+                        ${cap.materias.map(m => `<span class="chip">${m}</span>`).join('')}
+                    </div>
+                    <div class="capacidad-section-title">Virtudes focalizadas</div>
+                    <div class="chip-group">
+                        ${cap.virtudes.map(v => `<span class="chip virtue">${v}</span>`).join('')}
+                    </div>
+                </div>`;
             });
-            html += '</ul>';
-            
+
+            html += '</div>';
             contenido.innerHTML = html;
         }
 
@@ -1748,22 +2907,229 @@
                     fecha: new Date().toLocaleDateString('es-AR')
                 }
             ];
-            
+
             let html = '';
             avisos.forEach(aviso => {
-                html += `<div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #667eea; margin-bottom: 20px; border-radius: 4px;">
+                html += `<div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #1e3a5f; margin-bottom: 20px; border-radius: 4px;">
                     <h3 style="color: #333; margin-bottom: 10px;">${aviso.titulo}</h3>
                     <p style="color: #666; margin-bottom: 10px;">${aviso.contenido}</p>
                     <small style="color: #999;">Publicado: ${aviso.fecha}</small>
                 </div>`;
             });
-            
+
             contenido.innerHTML = html;
+        }
+
+        // ============================================================
+        //  Dashboard de Inicio
+        // ============================================================
+        function mostrarInicio() {
+            const contenido = document.getElementById('inicioContent');
+            if (!contenido) return;
+            const hoyD = hoy();
+            const cronograma = datosCompletos.cronograma.filter(c => c.a === anoActual);
+
+            // Próximas clases (hoy + futuras), hasta 6
+            const proximas = cronograma
+                .filter(c => c.fc && parseISO(c.fc) >= hoyD)
+                .sort((a, b) => parseISO(a.fc) - parseISO(b.fc))
+                .slice(0, 6);
+
+            // Mensajes del PC ordenados por fecha descendente
+            const mensajes = (MENSAJES_PC || []).slice().sort((a, b) => {
+                const da = a.fecha ? parseISO(a.fecha).getTime() : 0;
+                const db = b.fecha ? parseISO(b.fecha).getTime() : 0;
+                return db - da;
+            });
+
+            // Entregas próximas
+            const entregas = (ENTREGAS || [])
+                .filter(e => e.fecha && parseISO(e.fecha) >= hoyD)
+                .sort((a, b) => parseISO(a.fecha) - parseISO(b.fecha));
+
+            let html = `<section class="dashboard-welcome">
+                <div>
+                    <h2>Tu panel LOGE</h2>
+                    <p>Hoy es <strong>${fmtFull(hoyD)}</strong>. Esto es lo que tenés por delante en Año ${anoActual}.</p>
+                </div>
+                <div class="dashboard-welcome-tag">Año ${anoActual}</div>
+            </section>
+            <div class="dashboard-grid">`;
+
+            // Card: Próximas clases
+            html += `<article class="dashboard-card">
+                <header><h3>Próximas clases</h3><span class="dc-count">${proximas.length}</span></header>
+                <div class="dc-body">`;
+            if (!proximas.length) {
+                html += `<p class="empty-state-inline">No hay clases programadas próximas para Año ${anoActual}.</p>`;
+            } else {
+                proximas.forEach(r => {
+                    const d = parseISO(r.fc);
+                    const diff = diffDias(hoyD, d);
+                    const tagClass = diff === 0 ? 'is-today' : (diff === 1 ? 'is-tomorrow' : '');
+                    const tagText = diff === 0 ? 'Hoy' : (diff === 1 ? 'Mañana' : `en ${diff} ${diff === 1 ? 'día' : 'días'}`);
+                    const qNorm = normalizarQuarter(r.q);
+                    const mat = (datosCompletos.materias || {})[r.mat];
+                    const nombre = mat ? (mat.nombre || r.mat) : (r.mat || '');
+                    html += `<div class="upcoming-item ${tagClass}">
+                        <div class="upc-date">
+                            <span class="upc-day">${fmtDayNum(d)}</span>
+                            <span class="upc-month">${fmtMonth(d)}</span>
+                        </div>
+                        <div class="upc-info">
+                            <strong>${r.mat || '—'}</strong>
+                            <span class="upc-nombre">${escapeHTML(nombre)}</span>
+                            <span class="upc-meta">${fmtDow(d)} · Sem ${r.s || '-'}</span>
+                            ${r.obs ? `<span class="upc-obs">${escapeHTML(r.obs)}</span>` : ''}
+                        </div>
+                        <div class="upc-badges">
+                            <span class="upc-tag q-${qNorm}">${r.q || ''}</span>
+                            <span class="upc-when">${tagText}</span>
+                        </div>
+                    </div>`;
+                });
+            }
+            html += `</div></article>`;
+
+            // Card: Mensajes del PC
+            html += `<article class="dashboard-card">
+                <header><h3>Mensajes del PC</h3><span class="dc-count">${mensajes.length}</span></header>
+                <div class="dc-body">`;
+            if (!mensajes.length) {
+                html += `<p class="empty-state-inline">Sin mensajes nuevos del Profesor Coordinador.</p>
+                    <p class="dc-hint">Cuando el PC publique novedades, vas a verlas acá.</p>`;
+            } else {
+                mensajes.forEach(m => {
+                    html += `<div class="mensaje-item">
+                        <div class="msg-meta"><strong>${escapeHTML(m.autor || 'Profesor Coordinador')}</strong> · <span>${m.fecha ? fmtDate(m.fecha) : ''}</span></div>
+                        <div class="msg-title">${escapeHTML(m.titulo || '')}</div>
+                        ${m.texto ? `<div class="msg-body">${escapeHTML(m.texto)}</div>` : ''}
+                    </div>`;
+                });
+            }
+            html += `</div></article>`;
+
+            // Card: Entregas / desempeños próximos
+            html += `<article class="dashboard-card">
+                <header><h3>Próximas entregas y desempeños</h3><span class="dc-count">${entregas.length}</span></header>
+                <div class="dc-body">`;
+            if (!entregas.length) {
+                html += `<p class="empty-state-inline">No hay entregas ni desempeños cargados próximos.</p>
+                    <p class="dc-hint">Cuando se acerquen fechas de desempeño, van a aparecer acá con su nivel de urgencia.</p>`;
+            } else {
+                entregas.forEach(e => {
+                    const d = parseISO(e.fecha);
+                    const diff = diffDias(hoyD, d);
+                    const urgencia = diff <= 3 ? 'urgente' : (diff <= 7 ? 'proxima' : '');
+                    const tag = diff === 0 ? 'Hoy' : (diff === 1 ? 'Mañana' : `en ${diff} ${diff === 1 ? 'día' : 'días'}`);
+                    html += `<div class="entrega-item ${urgencia}">
+                        <div class="ent-date">
+                            <span class="ent-day">${fmtDayNum(d)}</span>
+                            <span class="ent-month">${fmtMonth(d)}</span>
+                        </div>
+                        <div class="ent-info">
+                            <strong>${escapeHTML(e.titulo || '')}</strong>
+                            ${e.materia ? `<span class="ent-materia">${escapeHTML(e.materia)}</span>` : ''}
+                            ${e.descripcion ? `<span class="ent-desc">${escapeHTML(e.descripcion)}</span>` : ''}
+                        </div>
+                        <div class="ent-when">${tag}</div>
+                    </div>`;
+                });
+            }
+            html += `</div></article>`;
+
+            html += `</div>`;
+
+            contenido.innerHTML = html;
+        }
+
+        // ============================================================
+        //  Cronograma: filtro y exportación
+        // ============================================================
+        function filtrarCronograma() {
+            const txt = document.getElementById('cronoSearch');
+            const sel = document.getElementById('cronoMatFilter');
+            filtroCronograma.texto = txt ? txt.value : '';
+            filtroCronograma.materia = sel ? sel.value : '';
+            mostrarCronograma();
+        }
+
+        function icsEscape(s) {
+            return String(s)
+                .replace(/\\/g, '\\\\')
+                .replace(/\r?\n/g, '\\n')
+                .replace(/,/g, '\\,')
+                .replace(/;/g, '\\;');
+        }
+
+        function exportarICS() {
+            const cronograma = datosCompletos.cronograma.filter(c => c.a === anoActual && c.fc);
+            if (!cronograma.length) {
+                alert('No hay clases con fecha para exportar en el año seleccionado.');
+                return;
+            }
+            const materias = datosCompletos.materias || {};
+            const pad = n => String(n).padStart(2, '0');
+            // Genera fecha UTC en formato iCal: YYYYMMDDTHHMMSSZ
+            const toICSUTC = (d) => d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate())
+                + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
+
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//LOGE Portal//Cronograma Ano ' + anoActual + '//ES',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'X-WR-CALNAME:LOGE Ano ' + anoActual,
+                'X-WR-TIMEZONE:America/Argentina/Buenos_Aires'
+            ];
+
+            const dtstamp = toICSUTC(new Date());
+
+            cronograma.forEach((r, i) => {
+                const d = parseISO(r.fc);
+                // Franja típica Buenos Aires (UTC-3): 09:00 a 13:00 local
+                const startLocal = new Date(d); startLocal.setHours(9, 0, 0, 0);
+                const endLocal = new Date(d); endLocal.setHours(13, 0, 0, 0);
+                // Convertir a UTC (suma 3 horas para BA)
+                const startUTC = new Date(startLocal.getTime() + 3 * 60 * 60 * 1000);
+                const endUTC = new Date(endLocal.getTime() + 3 * 60 * 60 * 1000);
+
+                const mat = materias[r.mat] || {};
+                const nombre = mat.nombre || r.mat || 'Clase';
+                const summary = (r.mat ? r.mat + ' – ' : '') + nombre;
+                const descParts = [];
+                if (r.q) descParts.push('Trimestre: ' + r.q);
+                if (r.s) descParts.push('Semana: ' + r.s);
+                if (r.obs) descParts.push('Observaciones: ' + r.obs);
+                const desc = descParts.join('\n');
+
+                lines.push('BEGIN:VEVENT');
+                lines.push('UID:loge-a' + anoActual + '-' + i + '-' + r.fc + '@recursosloge.github.io');
+                lines.push('DTSTAMP:' + dtstamp);
+                lines.push('DTSTART:' + toICSUTC(startUTC));
+                lines.push('DTEND:' + toICSUTC(endUTC));
+                lines.push('SUMMARY:' + icsEscape(summary));
+                if (desc) lines.push('DESCRIPTION:' + icsEscape(desc));
+                lines.push('LOCATION:Universidad Austral – Escuela de Educación');
+                lines.push('END:VEVENT');
+            });
+            lines.push('END:VCALENDAR');
+
+            const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'LOGE-Anio' + anoActual + '.ics';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         }
 
         // Cargar datos iniciales
         window.onload = () => {
-            mostrarCronograma();
+            mostrarInicio();
         };
     </script>
 </body>
